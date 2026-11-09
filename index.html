@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Acro Optical Marketing Studio</title>
+<style>
+  :root{--ivory:#FAF7F0;--beige:#E8DFCF;--beige2:#D9CCB4;--char:#2E2E2C;--mute:#7A756C;--white:#fff;--ok:#4F6B4A;--warn:#9A5B3C}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ivory);color:var(--char);font-family:-apple-system,"Apple SD Gothic Neo","Pretendard","Noto Sans KR",sans-serif;line-height:1.55}
+  header{background:var(--white);border-bottom:1px solid var(--beige);padding:20px 32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+  header h1{margin:0;font-size:18px;letter-spacing:.04em;font-weight:600}
+  header small{color:var(--mute);display:block;font-weight:400;letter-spacing:0}
+  nav{display:flex;gap:4px;flex-wrap:wrap}
+  nav button{background:none;border:none;padding:8px 14px;font-size:14px;color:var(--mute);cursor:pointer;border-radius:6px}
+  nav button.on{background:var(--char);color:var(--white)}
+  .notice{background:var(--beige);padding:10px 32px;font-size:13px;color:var(--char)}
+  main{max-width:1100px;margin:0 auto;padding:32px}
+  section{display:none}section.on{display:block}
+  h2{font-size:20px;font-weight:600;margin:0 0 6px}
+  .sub{color:var(--mute);font-size:13px;margin:0 0 24px}
+  .card{background:var(--white);border:1px solid var(--beige);border-radius:10px;padding:24px;margin-bottom:20px}
+  label{display:block;font-size:13px;color:var(--mute);margin:14px 0 6px}
+  input[type=text],input[type=number],input[type=date],select,textarea{width:100%;padding:10px 12px;border:1px solid var(--beige2);border-radius:6px;font:inherit;background:var(--white);color:var(--char)}
+  textarea{min-height:80px;resize:vertical}
+  .row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0 16px}
+  .chk{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--char);margin:8px 14px 0 0;cursor:pointer}
+  .btn{background:var(--char);color:var(--white);border:none;padding:10px 18px;border-radius:6px;font:inherit;font-size:14px;cursor:pointer}
+  .btn.light{background:var(--white);color:var(--char);border:1px solid var(--beige2)}
+  .btn.small{padding:6px 12px;font-size:13px}
+  .actions{display:flex;gap:8px;margin-top:20px;flex-wrap:wrap}
+  .badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:20px;background:var(--beige);color:var(--char);margin:2px 4px 2px 0}
+  .badge.ok{background:#E3EADF;color:var(--ok)}
+  .badge.no{background:#F3E4DB;color:var(--warn)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:20px}
+  .frame{background:var(--white);border:1px solid var(--beige);border-radius:10px;overflow:hidden}
+  .frame .ph{aspect-ratio:4/3;background:var(--beige);display:flex;align-items:center;justify-content:center;color:var(--mute);font-size:13px}
+  .frame img{width:100%;height:100%;object-fit:cover}
+  .frame .body{padding:14px 16px}
+  .frame h3{margin:0 0 4px;font-size:15px}
+  .frame p{margin:0 0 8px;font-size:13px;color:var(--mute)}
+  .toolbar{display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+  .week{display:grid;grid-template-columns:repeat(7,1fr);gap:10px}
+  .day{background:var(--white);border:1px solid var(--beige);border-radius:10px;min-height:180px;padding:10px}
+  .day.today{border-color:var(--char)}
+  .day h4{margin:0 0 8px;font-size:12px;color:var(--mute);font-weight:500}
+  .item{background:var(--ivory);border:1px solid var(--beige);border-radius:6px;padding:8px;margin-bottom:6px;font-size:12px;cursor:pointer}
+  .item:hover{border-color:var(--char)}
+  .item b{display:block;font-size:12px}
+  .modal{position:fixed;inset:0;background:rgba(46,46,44,.45);display:none;align-items:flex-start;justify-content:center;padding:40px 16px;overflow:auto;z-index:10}
+  .modal.on{display:flex}
+  .modal .card{width:100%;max-width:640px}
+  pre.prompt{white-space:pre-wrap;background:var(--ivory);border:1px solid var(--beige);border-radius:6px;padding:14px;font-size:13px;font-family:inherit}
+  .empty{color:var(--mute);font-size:14px;padding:30px;text-align:center}
+  @media (max-width:800px){.week{grid-template-columns:1fr}main{padding:20px}header,.notice{padding-left:20px;padding-right:20px}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Acro Optical Marketing Studio<small>아크로안경점 콘텐츠 관리 도구 · 임시 웹 버전</small></h1>
+  <nav>
+    <button data-tab="store" class="on">매장 정보</button>
+    <button data-tab="frames">안경테</button>
+    <button data-tab="cal">콘텐츠 캘린더</button>
+    <button data-tab="backup">백업</button>
+  </nav>
+</header>
+<div class="notice">임시 버전이에요. 데이터는 <b>지금 쓰는 이 브라우저에만</b> 저장되고, 다른 기기와 공유되지 않아요. 중요한 데이터는 [백업] 탭에서 파일로 저장하세요. 이 페이지 주소는 공개라서 누구나 열 수 있어요(데이터는 보이지 않아요).</div>
+
+<main>
+<!-- 매장 정보 -->
+<section id="store" class="on">
+  <h2>매장 기본 정보</h2>
+  <p class="sub">모든 채널(인스타·네이버 플레이스·당근)이 이 한 곳의 정보만 써요. "확인됨"에 체크한 정보만 캡션 프롬프트에 들어가요.</p>
+  <div class="card" id="storeForm"></div>
+</section>
+
+<!-- 안경테 -->
+<section id="frames">
+  <h2>안경테 관리</h2>
+  <p class="sub">가격과 재고는 "확인됨"에 체크해야 프롬프트에 들어가요.</p>
+  <div class="toolbar">
+    <button class="btn" onclick="openFrame()">+ 안경테 추가</button>
+    <label class="chk" style="margin:0"><input type="checkbox" id="onlyUnposted" onchange="renderFrames()"> 아직 안 올린 안경테만 보기</label>
+  </div>
+  <div class="grid" id="frameGrid"></div>
+</section>
+
+<!-- 캘린더 -->
+<section id="cal">
+  <h2>콘텐츠 캘린더</h2>
+  <p class="sub">콘텐츠를 누르면 수정하고, 캡션 프롬프트를 만들 수 있어요.</p>
+  <div class="toolbar">
+    <button class="btn light small" onclick="moveWeek(-1)">← 지난 주</button>
+    <b id="weekLabel"></b>
+    <button class="btn light small" onclick="moveWeek(1)">다음 주 →</button>
+    <button class="btn light small" onclick="weekStart=mondayOf(new Date());renderCal()">이번 주</button>
+    <button class="btn small" onclick="openContent()">+ 콘텐츠 추가</button>
+  </div>
+  <div class="week" id="week"></div>
+</section>
+
+<!-- 백업 -->
+<section id="backup">
+  <h2>백업</h2>
+  <p class="sub">브라우저 데이터는 기록 삭제 등으로 사라질 수 있어요. 자주 파일로 저장해 두세요.</p>
+  <div class="card">
+    <div class="actions" style="margin-top:0">
+      <button class="btn" onclick="exportData()">백업 파일 저장하기</button>
+      <button class="btn light" onclick="document.getElementById('importFile').click()">백업 파일 불러오기</button>
+      <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(this)">
+    </div>
+    <p class="sub" style="margin:16px 0 0">불러오기를 하면 지금 이 브라우저의 데이터가 백업 파일 내용으로 바뀌어요.</p>
+  </div>
+</section>
+</main>
+
+<!-- 안경테 모달 -->
+<div class="modal" id="frameModal"><div class="card">
+  <h2 id="frameTitle">안경테</h2>
+  <label>사진</label>
+  <input type="file" id="fPhoto" accept="image/*">
+  <div id="fPhotoPrev" style="margin-top:8px"></div>
+  <div class="row">
+    <div><label>브랜드</label><input type="text" id="fBrand"></div>
+    <div><label>모델명</label><input type="text" id="fModel"></div>
+  </div>
+  <div class="row">
+    <div><label>소재</label><input type="text" id="fMaterial" placeholder="예: 티타늄, 아세테이트"></div>
+    <div><label>형태</label><input type="text" id="fShape" placeholder="예: 라운드, 스퀘어"></div>
+    <div><label>색상</label><input type="text" id="fColor"></div>
+  </div>
+  <label>스타일 태그</label>
+  <div id="fTags"></div>
+  <div class="row">
+    <div><label>가격</label><input type="text" id="fPrice"><label class="chk"><input type="checkbox" id="fPriceOk"> 확인됨</label></div>
+    <div><label>재고</label><input type="text" id="fStock" placeholder="예: 있음, 2개"><label class="chk"><input type="checkbox" id="fStockOk"> 확인됨</label></div>
+  </div>
+  <label>진행</label>
+  <label class="chk"><input type="checkbox" id="fShot"> 촬영 완료</label>
+  <label class="chk"><input type="checkbox" id="fInsta"> 인스타에 올림</label>
+  <label class="chk"><input type="checkbox" id="fDaangn"> 당근에 올림</label>
+  <div class="actions">
+    <button class="btn" onclick="saveFrame()">저장</button>
+    <button class="btn light" onclick="closeModal('frameModal')">취소</button>
+    <button class="btn light" id="fDel" onclick="deleteFrame()" style="margin-left:auto">삭제</button>
+  </div>
+</div></div>
+
+<!-- 콘텐츠 모달 -->
+<div class="modal" id="contentModal"><div class="card">
+  <h2>콘텐츠</h2>
+  <div class="row">
+    <div><label>날짜</label><input type="date" id="cDate"></div>
+    <div><label>종류</label><select id="cType"></select></div>
+  </div>
+  <div class="row">
+    <div><label>방향</label><select id="cDir"></select></div>
+    <div><label>진행 상태</label><select id="cStatus"></select></div>
+  </div>
+  <label>제목·아이디어 메모</label><input type="text" id="cTitle">
+  <label>연결된 안경테</label><select id="cFrame"></select>
+  <label>성과 기록 (게시 후)</label>
+  <div class="row">
+    <div><label>저장 수</label><input type="number" id="mSave" min="0"></div>
+    <div><label>프로필 방문 수</label><input type="number" id="mVisit" min="0"></div>
+    <div><label>당근 단골 수</label><input type="number" id="mFan" min="0"></div>
+    <div><label>"인스타/당근 보고 왔어요" 손님 수</label><input type="number" id="mCame" min="0"></div>
+  </div>
+  <div class="actions">
+    <button class="btn" onclick="saveContent()">저장</button>
+    <button class="btn light" onclick="makePrompt()">캡션 프롬프트 만들기</button>
+    <button class="btn light" onclick="closeModal('contentModal')">닫기</button>
+    <button class="btn light" id="cDel" onclick="deleteContent()" style="margin-left:auto">삭제</button>
+  </div>
+  <div id="promptBox" style="display:none;margin-top:20px">
+    <label>캡션 프롬프트 (Claude 채팅에 붙여넣기)</label>
+    <pre class="prompt" id="promptText"></pre>
+    <button class="btn small" onclick="copyPrompt()">복사</button> <span id="copied" class="sub"></span>
+  </div>
+</div></div>
+
+<script>
+const KEY='acroStudio.v1';
+const TAGS=['캐주얼','클래식','미니멀','빈티지','스포티','오피스'];
+const TYPES=['인스타 게시물','인스타 릴스','인스타 스토리','당근 소식'];
+const DIRS=['제품 소개','스타일 추천','안경 정보','매장 방문 안내'];
+const STATUS=['아이디어','초안','촬영 완료','게시 완료'];
+const STORE_FIELDS=[['address','주소','text'],['hours','영업시간','textarea'],['phone','전화번호','text'],['directions','찾아오는 길 설명','textarea']];
+
+let db=load();
+function load(){try{const d=JSON.parse(localStorage.getItem(KEY));if(d)return d}catch(e){}return{store:{},frames:[],contents:[]}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(db))}catch(e){alert('저장 공간이 부족해요. 사진 수를 줄이거나 백업 후 정리해 주세요.')}}
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+
+// 탭
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x===b));
+  document.querySelectorAll('section').forEach(s=>s.classList.toggle('on',s.id===b.dataset.tab));
+  if(b.dataset.tab==='frames')renderFrames();if(b.dataset.tab==='cal')renderCal();
+});
+function closeModal(id){$(id).classList.remove('on')}
+
+// 매장 정보
+function renderStore(){
+  let h='';
+  STORE_FIELDS.forEach(([k,label,t])=>{
+    const v=db.store[k]||{};
+    h+=`<label>${label}</label>`+(t==='textarea'?`<textarea id="s_${k}">${esc(v.value)}</textarea>`:`<input type="text" id="s_${k}" value="${esc(v.value)}">`)+
+       `<label class="chk"><input type="checkbox" id="s_${k}_ok" ${v.ok?'checked':''}> 확인됨</label>`;
+  });
+  h+=`<div class="actions"><button class="btn" onclick="saveStore()">저장</button><span class="sub" id="storeSaved" style="margin:10px 0 0"></span></div>`;
+  $('storeForm').innerHTML=h;
+}
+function saveStore(){
+  STORE_FIELDS.forEach(([k])=>db.store[k]={value:$('s_'+k).value.trim(),ok:$('s_'+k+'_ok').checked});
+  save();$('storeSaved').textContent='저장했어요.';setTimeout(()=>$('storeSaved').textContent='',2000);
+}
+
+// 안경테
+let editingFrame=null,pendingPhoto=null;
+$('fTags').innerHTML=TAGS.map(t=>`<label class="chk"><input type="checkbox" value="${t}"> ${t}</label>`).join('');
+function frameName(f){return [f.brand,f.model].filter(Boolean).join(' ')||'이름 없는 안경테'}
+function renderFrames(){
+  let list=db.frames;
+  if($('onlyUnposted').checked)list=list.filter(f=>!f.insta&&!f.daangn);
+  if(!list.length){$('frameGrid').innerHTML='<div class="empty">등록된 안경테가 없어요.</div>';return}
+  $('frameGrid').innerHTML=list.map(f=>`<div class="frame" onclick="openFrame('${f.id}')" style="cursor:pointer">
+    <div class="ph">${f.photo?`<img src="${f.photo}" alt="">`:'사진 없음'}</div>
+    <div class="body"><h3>${esc(frameName(f))}</h3>
+    <p>${esc([f.material,f.shape,f.color].filter(Boolean).join(' · '))}</p>
+    ${(f.tags||[]).map(t=>`<span class="badge">${esc(t)}</span>`).join('')}
+    <div style="margin-top:6px">
+      <span class="badge ${f.priceOk?'ok':'no'}">가격 ${f.priceOk?'확인됨':'미확인'}</span>
+      <span class="badge ${f.stockOk?'ok':'no'}">재고 ${f.stockOk?'확인됨':'미확인'}</span>
+      ${f.shot?'<span class="badge">촬영 완료</span>':''}${f.insta?'<span class="badge">인스타</span>':''}${f.daangn?'<span class="badge">당근</span>':''}
+    </div></div></div>`).join('');
+}
+function openFrame(id){
+  const f=db.frames.find(x=>x.id===id)||{};editingFrame=id||null;pendingPhoto=f.photo||null;
+  $('frameTitle').textContent=id?'안경테 수정':'안경테 추가';
+  ['Brand','Model','Material','Shape','Color','Price','Stock'].forEach(k=>$('f'+k).value=f[k.toLowerCase()]||'');
+  $('fPriceOk').checked=!!f.priceOk;$('fStockOk').checked=!!f.stockOk;$('fShot').checked=!!f.shot;$('fInsta').checked=!!f.insta;$('fDaangn').checked=!!f.daangn;
+  $('fTags').querySelectorAll('input').forEach(i=>i.checked=(f.tags||[]).includes(i.value));
+  $('fPhoto').value='';$('fPhotoPrev').innerHTML=pendingPhoto?`<img src="${pendingPhoto}" style="max-width:160px;border-radius:6px">`:'';
+  $('fDel').style.display=id?'':'none';$('frameModal').classList.add('on');
+}
+$('fPhoto').onchange=e=>{
+  const file=e.target.files[0];if(!file)return;
+  const img=new Image();img.onload=()=>{
+    const s=Math.min(1,900/Math.max(img.width,img.height));const c=document.createElement('canvas');
+    c.width=img.width*s;c.height=img.height*s;c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+    pendingPhoto=c.toDataURL('image/jpeg',.82);$('fPhotoPrev').innerHTML=`<img src="${pendingPhoto}" style="max-width:160px;border-radius:6px">`;
+  };img.src=URL.createObjectURL(file);
+};
+function saveFrame(){
+  const f={id:editingFrame||uid(),photo:pendingPhoto};
+  ['Brand','Model','Material','Shape','Color','Price','Stock'].forEach(k=>f[k.toLowerCase()]=$('f'+k).value.trim());
+  Object.assign(f,{priceOk:$('fPriceOk').checked,stockOk:$('fStockOk').checked,shot:$('fShot').checked,insta:$('fInsta').checked,daangn:$('fDaangn').checked,
+    tags:[...$('fTags').querySelectorAll('input:checked')].map(i=>i.value)});
+  const i=db.frames.findIndex(x=>x.id===f.id);i>=0?db.frames[i]=f:db.frames.push(f);
+  save();closeModal('frameModal');renderFrames();
+}
+function deleteFrame(){if(!confirm('이 안경테를 삭제할까요?'))return;db.frames=db.frames.filter(x=>x.id!==editingFrame);save();closeModal('frameModal');renderFrames()}
+
+// 캘린더
+const pad=n=>String(n).padStart(2,'0');
+const ymd=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+function mondayOf(d){d=new Date(d.getFullYear(),d.getMonth(),d.getDate());const w=(d.getDay()+6)%7;d.setDate(d.getDate()-w);return d}
+let weekStart=mondayOf(new Date());
+function moveWeek(n){weekStart.setDate(weekStart.getDate()+7*n);renderCal()}
+function renderCal(){
+  const days=[...Array(7)].map((_,i)=>{const d=new Date(weekStart);d.setDate(d.getDate()+i);return d});
+  $('weekLabel').textContent=`${days[0].getMonth()+1}월 ${days[0].getDate()}일 – ${days[6].getMonth()+1}월 ${days[6].getDate()}일`;
+  const today=ymd(new Date()),W='월화수목금토일';
+  $('week').innerHTML=days.map((d,i)=>{const k=ymd(d);
+    const items=db.contents.filter(c=>c.date===k);
+    return `<div class="day ${k===today?'today':''}"><h4>${W[i]} ${d.getMonth()+1}/${d.getDate()}</h4>
+      ${items.map(c=>`<div class="item" onclick="openContent('${c.id}')"><b>${esc(c.type)}</b>${esc(c.title||c.dir)}<br><span class="badge ${c.status==='게시 완료'?'ok':''}">${esc(c.status)}</span></div>`).join('')}
+    </div>`}).join('');
+}
+let editingContent=null;
+const fill=(id,arr)=>$(id).innerHTML=arr.map(v=>`<option>${v}</option>`).join('');
+fill('cType',TYPES);fill('cDir',DIRS);fill('cStatus',STATUS);
+function openContent(id){
+  const c=db.contents.find(x=>x.id===id)||{date:ymd(weekStart),type:TYPES[0],dir:DIRS[0],status:STATUS[0],m:{}};
+  editingContent=id||null;
+  $('cFrame').innerHTML='<option value="">(연결 안 함)</option>'+db.frames.map(f=>`<option value="${f.id}">${esc(frameName(f))}</option>`).join('');
+  $('cDate').value=c.date;$('cType').value=c.type;$('cDir').value=c.dir;$('cStatus').value=c.status;$('cTitle').value=c.title||'';$('cFrame').value=c.frame||'';
+  const m=c.m||{};$('mSave').value=m.save??'';$('mVisit').value=m.visit??'';$('mFan').value=m.fan??'';$('mCame').value=m.came??'';
+  $('promptBox').style.display='none';$('cDel').style.display=id?'':'none';$('contentModal').classList.add('on');
+}
+function readContent(){
+  return{id:editingContent||uid(),date:$('cDate').value,type:$('cType').value,dir:$('cDir').value,status:$('cStatus').value,title:$('cTitle').value.trim(),frame:$('cFrame').value,
+    m:{save:$('mSave').value,visit:$('mVisit').value,fan:$('mFan').value,came:$('mCame').value}};
+}
+function saveContent(){
+  const c=readContent();if(!c.date){alert('날짜를 골라 주세요.');return}
+  const i=db.contents.findIndex(x=>x.id===c.id);i>=0?db.contents[i]=c:db.contents.push(c);
+  editingContent=c.id;$('cDel').style.display='';save();renderCal();closeModal('contentModal');
+}
+function deleteContent(){if(!confirm('이 콘텐츠를 삭제할까요?'))return;db.contents=db.contents.filter(x=>x.id!==editingContent);save();closeModal('contentModal');renderCal()}
+
+// 캡션 프롬프트: 확인됨 정보만
+function makePrompt(){
+  const c=readContent(),f=db.frames.find(x=>x.id===c.frame);
+  const facts=[];
+  STORE_FIELDS.forEach(([k,label])=>{const v=db.store[k];if(v&&v.ok&&v.value)facts.push(`- ${label}: ${v.value}`)});
+  const product=[];
+  if(f){
+    if(f.brand)product.push(`- 브랜드: ${f.brand}`);if(f.model)product.push(`- 모델명: ${f.model}`);
+    if(f.material)product.push(`- 소재: ${f.material}`);if(f.shape)product.push(`- 형태: ${f.shape}`);if(f.color)product.push(`- 색상: ${f.color}`);
+    if(f.tags&&f.tags.length)product.push(`- 스타일: ${f.tags.join(', ')}`);
+    if(f.priceOk&&f.price)product.push(`- 가격(확인됨): ${f.price}`);
+    if(f.stockOk&&f.stock)product.push(`- 재고(확인됨): ${f.stock}`);
+  }
+  const isDaangn=c.type==='당근 소식';
+  let p=`아크로안경점의 ${c.type} 글 초안을 써줘.\n\n콘텐츠 방향: ${c.dir}`+(c.title?`\n아이디어 메모: ${c.title}`:'');
+  p+=`\n\n[매장 정보 (확인됨)]\n`+(facts.length?facts.join('\n'):'- (확인된 매장 정보 없음)');
+  p+=`\n\n[안경테 정보]\n`+(product.length?product.join('\n'):'- (연결된 안경테 없음)');
+  p+=isDaangn
+    ?`\n\n[작성 방식]\n- 동네 이웃에게 말하듯 친근하고 따뜻한 말투로 써줘.\n- 매장이 건물 안쪽에 있으니, 찾아오는 길이 잘 드러나게 써줘.\n- 너무 광고처럼 보이지 않게 자연스럽게.`
+    :`\n\n[작성 방식]\n- 스타일과 제품이 돋보이는 짧은 인스타그램 캡션으로 써줘. (3~5문장)\n- 프리미엄 미니멀하고 신뢰감 있는 분위기.\n- 마지막에 관련 해시태그 8~12개.`;
+  p+=`\n\n[규칙]\n- 위에 적힌 정보만 사용해. 가격, 할인, 쿠폰, 재고, 브랜드, 영업시간, 주소처럼 위에 없는 사실은 절대 지어내지 마.\n- 버전 2가지를 써줘.`;
+  $('promptText').textContent=p;$('promptBox').style.display='block';$('copied').textContent='';
+}
+function copyPrompt(){
+  const t=$('promptText').textContent;
+  const done=()=>$('copied').textContent='복사했어요!';
+  if(navigator.clipboard)navigator.clipboard.writeText(t).then(done,()=>fallbackCopy(t,done));else fallbackCopy(t,done);
+}
+function fallbackCopy(t,done){const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();document.execCommand('copy');a.remove();done()}
+
+// 백업
+function exportData(){
+  const b=new Blob([JSON.stringify(db)],{type:'application/json'});const a=document.createElement('a');
+  a.href=URL.createObjectURL(b);a.download=`acro-studio-backup-${ymd(new Date())}.json`;a.click();
+}
+function importData(inp){
+  const file=inp.files[0];if(!file)return;const r=new FileReader();
+  r.onload=()=>{try{const d=JSON.parse(r.result);if(!d.frames||!d.contents)throw 0;if(!confirm('지금 데이터를 백업 파일 내용으로 바꿀까요?'))return;db=d;save();renderStore();renderFrames();renderCal();alert('불러왔어요.')}catch(e){alert('올바른 백업 파일이 아니에요.')}};
+  r.readAsText(file);inp.value='';
+}
+
+renderStore();renderFrames();renderCal();
+</script>
+</body>
+</html>
